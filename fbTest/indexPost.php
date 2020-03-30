@@ -103,7 +103,7 @@ $graphNode = $response->getGraphNode();		// display everything in the browser
 		<?php
 	} else { // not logged in
 		$permissions = ['email']; // Optional permissions
-		$loginUrl = $helper->getLoginUrl( 'http://localhost/fbTest/index.php', $permissions );///aici trebuie schimbat URL pt localhost. Al meu este cel definit inainte
+		$loginUrl = $helper->getLoginUrl( 'http://localhost/fbTest/indexPost.php', $permissions );///aici trebuie schimbat URL pt localhost. Al meu este cel definit inainte
 
 		?>
 		<a href="<?php echo $loginUrl; ?>">Log in with Facebook</a>
