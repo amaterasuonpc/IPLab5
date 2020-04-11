@@ -1,5 +1,5 @@
 <?php
-require_once '../FacebookUser.php';
+require_once "C:/xampp\htdocs\ip\Refactor/fb\FacebookUser.php";
 class FacebookGet extends FacebookUser
 {
     //for pages
@@ -105,11 +105,17 @@ class Post {
     public function getComments(){
         return $this->post['comments']['data'];
     }
-    public function getlikes(){
+    public function getLikes(){
         return $this->post['likes']['data'];
     }
+    public function getCommentCount(){
+        return count($this->post['comments']['data']);
+    }
+    public function getLikeCount(){
+        return count($this->post['likes']['data']);
+    }
 };
-
+/*
 echo "<pre>";
 
 
@@ -137,3 +143,5 @@ print_r($post->getLikes());
 
 
 echo "</pre>";
+*/
+?>
