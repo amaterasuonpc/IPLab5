@@ -1,5 +1,5 @@
 <?php
-require_once("/xampp/htdocs/ip/Refactor/fb/get/FacebookGet.php");
+require_once("FacebookGet.php");
 function deliver()
 {
 	echo "<pre>";

@@ -1,5 +1,6 @@
 <?php
-require_once 'C:\xampp\htdocs\ip\Refactor\fb/vendor/php-graph-sdk/autoload.php';
+
+require_once './vendor/php-graph-sdk/autoload.php';
 class FacebookUser
 {
 	//access token de la Proiect IP
