@@ -1,24 +1,12 @@
 <?php
-require_once '../FacebookUser.php';
+require_once "C:/xampp\htdocs\ip\Refactor/fb\FacebookUser.php";
 class FacebookGet extends FacebookUser
 {
     //for pages
-    public function getWholePost($postId){
-        try {
-            $response = $this->fb->get($postId . "?fields=comments{message,from},likes", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
-        return $response->getDecodedBody();
-    }
-    public function getCommentCount($postId)
+    public function execute($command)
     {
         try {
-            $response = $this->fb->get($postId . "?fields=comments", $this->accessToken);
+            $response = $this->fb->get($command, $this->accessToken);
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
             exit;
@@ -26,90 +14,72 @@ class FacebookGet extends FacebookUser
             echo 'Facebook SDK returned an error: ' . $e->getMessage();
             exit;
         }
+        return $response;
+    }
+
+    public function getWholePost($postId)
+    {
+        return $response = $this->execute($postId . "?fields=comments{message,from},likes");
+    }
+    public function getCommentCount($postId)
+    { //deprecated
+        $response = $this->execute($postId . "?fields=comments");
         return count($response->getDecodedBody()['comments']['data']);
     }
 
     public function getLikeCount($postId)
-    {
-        try {
-            $response = $this->fb->get($postId . "?fields=likes", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
+    {//deprecated
+        $response = $this->execute($postId . "?fields=likes");
         return count($response->getDecodedBody()['likes']['data']);
     }
     public function getComments($postId)
-    {
-        try {
-            $response = $this->fb->get($postId . "?fields=message,comments{message}", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
+    {//deprecated
+        $response = $this->execute($postId . "?fields=message,comments{message}");
         return $response->getDecodedBody()['comments']['data'];
     }
     //for user
     public function getPages($userId)
     {
-        try {
-            $response = $this->fb->get($userId . "/accounts?fields=id", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
+        $response = $this->execute($userId . "/accounts?fields=id");
         return $response->getDecodedBody()['data'];
     }
     public function getPageToken($pageId)
     {
-        try {
-            $response = $this->fb->get($pageId . "?fields=access_token", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
+        $response = $this->execute($pageId . "?fields=access_token");
         return $response->getDecodedBody();
     }
     public function getPostsArray($pageId)
     {
-        try {
-            $response = $this->fb->get($pageId . "?fields=posts", $this->accessToken);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
+        $response = $this->execute($pageId . "?fields=posts");
         return $response->getDecodedBody()['posts']['data'];
     }
 };
 
-class Post {
+class Post
+{
     private $post;
-    function __construct($post){
+    function __construct($post)
+    {
         $this->post = $post;
     }
-    public function getComments(){
+    public function getComments()
+    {
         return $this->post['comments']['data'];
     }
-    public function getlikes(){
+    public function getLikes()
+    {
         return $this->post['likes']['data'];
     }
+    public function getCommentCount()
+    {
+        return count($this->post['comments']['data']);
+    }
+    public function getLikeCount()
+    {
+        return count($this->post['likes']['data']);
+    }
 };
-
+/*
 echo "<pre>";
 
 
@@ -137,3 +107,4 @@ print_r($post->getLikes());
 
 
 echo "</pre>";
+*/
