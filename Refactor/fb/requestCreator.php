@@ -1,8 +1,11 @@
 <form action="REST.php" method="get">
     <select  id="do" name="do">
-            <option value="get1">comments</option>
-            <option value="get2">comment count</option>
-            <option value="get3 like count">like count</option>
+            <option value="getComments">comments</option>
+            <option value="getCommentCount">comment count</option>
+            <option value="getLikeCount">like count</option>
+            <option value="getPages">get pages</option>
+            <option value="getPostsArray">get Posts</option>
+            
     </select><br>
     <label>user ID:</label><br>
     <input type="text" name="userId" /><br>
