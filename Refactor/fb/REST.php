@@ -27,7 +27,7 @@ function deliver()
 						$obiect->query($sql);
 					}
 
-					//header('Location: ' . $_SESSION['redirect']);
+					header('Location: ' . $_SESSION['redirect']);
 					break;
 				case 'login':
 					$_SESSION['userId'] = $_GET['userId'];
@@ -95,3 +95,4 @@ function deliver()
 	echo "</pre>";
 }
 deliver();
+?>
