@@ -19,7 +19,8 @@ class FacebookGet extends FacebookUser
 
     public function getWholePost($postId)
     {
-        return $response = $this->execute($postId . "?fields=comments{message,from},likes");
+        $response = $this->execute($postId . "?fields=comments{message,from},likes");
+        return $response;
     }
     public function getCommentCount($postId)
     { //deprecated
