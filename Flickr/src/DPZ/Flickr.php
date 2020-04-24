@@ -66,7 +66,7 @@ class Flickr
     /**
      * @var string Flickr API key
      */
-    private $consumerKey;
+    public $consumerKey;
 
     /**
      * @var string Flickr API secret
@@ -158,6 +158,7 @@ class Flickr
         $requestParams['photo'] = $photo;
 
         $xml = $this->httpRequest(self::UPLOAD_ENDPOINT, $requestParams);
+        var_dump($xml);
 
         $response = $this->getResponseFromXML($xml);
 
@@ -189,6 +190,14 @@ class Flickr
         $response = $this->getResponseFromXML($xml);
 
         return empty($response) ? NULL : $response;
+    }
+
+
+    public function authenticateWith($token,$secretToken,$requestSecret){
+
+        $this->setOauthData(self::OAUTH_ACCESS_TOKEN, $token);
+        $this->setOauthData(self::OAUTH_ACCESS_TOKEN_SECRET,$secretToken);
+        $this->setOauthData(self::OAUTH_REQUEST_TOKEN_SECRET,$requestSecret);
     }
 
     /**
@@ -659,8 +668,14 @@ class Flickr
      * @param array $parameters
      * @return mixed
      */
-    private function httpRequest($url, $parameters)
+    PUBLIC function httpRequest($url, $parameters)
     {
+        if (isset($parameters["photo"])) {
+            $p = $parameters["photo"];
+            $pf = substr($p, 1);
+    
+            $parameters["photo"] = new \CurlFile($pf, mime_content_type ( $pf ), 'photo');
+        }
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -670,6 +685,7 @@ class Flickr
         {
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_POST, TRUE);
+            curl_setopt($curl, CURLOPT_SAFE_UPLOAD, false);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
         }
         else
